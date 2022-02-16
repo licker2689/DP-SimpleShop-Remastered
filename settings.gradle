@@ -1,0 +1,8 @@
+rootProject.name = 'DP-SimpleShop'
+include 'v1_12_2'
+include 'v1_13_2'
+include 'v1_14_4'
+include 'v1_15_2'
+include 'v1_16_5'
+include 'v1_17_1'
+
