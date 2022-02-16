@@ -276,6 +276,7 @@ public class DSSFunction {
         ItemMeta im = r.getItemMeta();
         List<String> lore = im.getLore();
         lore.remove(lore.size() - 1);
+        lore.remove(lore.size() - 1);
         im.setLore(lore);
         r.setItemMeta(im);
         r.setAmount(1);
