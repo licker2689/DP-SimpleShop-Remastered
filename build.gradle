@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.darksoldier1404'
-version '1.0.0.2'
+version '1.0.0.3'
 
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
