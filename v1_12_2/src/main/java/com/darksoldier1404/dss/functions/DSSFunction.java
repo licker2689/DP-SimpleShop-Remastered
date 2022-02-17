@@ -271,8 +271,8 @@ public class DSSFunction {
             return;
         }
         ItemStack r = item.clone();
-        r = NBT.c(r, "price");
-        r = NBT.c(r, "sellPrice");
+        r = NBT.removeTag(r, "price");
+        r = NBT.removeTag(r, "sellPrice");
         ItemMeta im = r.getItemMeta();
         List<String> lore = im.getLore();
         lore.remove(lore.size() - 1);
@@ -306,8 +306,8 @@ public class DSSFunction {
         }
         double price = NBT.getDoubleTag(item, "sellPrice") * amount;
         ItemStack r = item.clone();
-        r = NBT.c(r, "sellPrice");
-        r = NBT.c(r, "price");
+        r = NBT.removeTag(r, "sellPrice");
+        r = NBT.removeTag(r, "price");
         ItemMeta im = r.getItemMeta();
         List<String> lore = im.getLore();
         lore.remove(lore.size() - 1);
