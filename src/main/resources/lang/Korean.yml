@@ -1,0 +1,13 @@
+Lang: "Korean"
+
+# command info
+shop_cmd_create: "/상점 생성 <이름> <줄> - 상점을 생성합니다."
+shop_cmd_title: "/상점 타이틀 <이름> <타이틀> - 상점의 타이틀을 설정합니다."
+shop_cmd_display: "/상점 진열 <이름> - 상점의 물품을 진열합니다."
+shop_cmd_price: "/상점 가격 <이름> <슬롯> <B/S> <가격> - 해당 상점의 해당 슬롯의 구매/판매 가격을 설정합니다."
+shop_cmd_list: "/상점 목록 - 상점 목록을 확인합니다."
+shop_cmd_reset: "/상점 초기화 <이름> - 상점의 물품을 초기화합니다."
+shop_cmd_delete: "/상점 삭제 <이름> - 상점을 삭제합니다."
+shop_cmd_delete_all: "/상점 전체삭제 - 모든 상점을 삭제합니다."
+shop_cmd_open: "/상점 오픈 <이름> - 해당 상점을 오픈합니다."
+shop_cmd_open_other: "/상점 오픈 <이름> <닉네임> - 해당 상점을 해당 유저에게 오픈합니다."

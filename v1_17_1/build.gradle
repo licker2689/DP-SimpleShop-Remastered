@@ -9,9 +9,13 @@ tasks.withType(JavaCompile) {
 }
 
 group 'github.com/darksoldier1404'
-version = '1.0.0.4'
+version = '1.0.0.5'
 configurations {
     jar.archiveName = 'DP-SimpleShop-_' + name + '-' + version + '.jar'
+}
+build {
+    sourceCompatibility = 16
+    targetCompatibility = 16
 }
 jar{
     destinationDirectory.set(file("$rootDir/jars"))

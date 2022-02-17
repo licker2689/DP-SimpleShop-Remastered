@@ -1,5 +1,6 @@
 package com.darksoldier1404.dss.commands;
 
+import com.darksoldier1404.dppc.lang.DLang;
 import com.darksoldier1404.dss.SimpleShop;
 import com.darksoldier1404.dss.functions.DSSFunction;
 import org.bukkit.command.Command;
@@ -14,24 +15,25 @@ import java.util.List;
 public class DSSCommand implements CommandExecutor, TabCompleter {
     private final SimpleShop plugin = SimpleShop.getInstance();
     private final String prefix = plugin.prefix;
+    private final DLang lang = plugin.lang;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             if (sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "/상점 생성 <이름> <줄> - 상점을 생성합니다.");
-                sender.sendMessage(prefix + "/상점 타이틀 <이름> <타이틀> - 상점의 타이틀을 설정합니다.");
-                sender.sendMessage(prefix + "/상점 진열 <이름> - 상점의 물품을 진열합니다.");
-                sender.sendMessage(prefix + "/상점 가격 <이름> <슬롯> <B/S> <가격> - 해당 상점의 해당 슬롯의 구매/판매 가격을 설정합니다.");
-                sender.sendMessage(prefix + "/상점 목록 - 상점 목록을 확인합니다.");
-                sender.sendMessage(prefix + "/상점 초기화 <이름> - 상점의 물품을 초기화합니다.");
-                sender.sendMessage(prefix + "/상점 삭제 <이름> - 상점을 삭제합니다.");
-                sender.sendMessage(prefix + "/상점 전체삭제 - 모든 상점을 삭제합니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_create"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_title"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_display"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_price"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_list"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_reset"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_delete"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_delete_all"));
             }
             if (sender.hasPermission("dss.list")) {
-                sender.sendMessage(prefix + "/상점 오픈 <이름> <닉네임> - 해당 상점을 해당 유저에게 오픈합니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_open_other"));
             }
-            sender.sendMessage(prefix + "/상점 오픈 <이름> - 해당 상점을 오픈합니다.");
+            sender.sendMessage(prefix + lang.get("shop_cmd_open"));
             return false;
         }
         if (args[0].equals("오픈")) {
