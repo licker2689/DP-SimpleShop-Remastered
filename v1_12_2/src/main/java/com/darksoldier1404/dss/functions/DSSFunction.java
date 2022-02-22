@@ -10,6 +10,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftContainer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +33,7 @@ public class DSSFunction {
             return;
         }
         YamlConfiguration shop = plugin.shops.get(name);
-        Inventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
+        DInventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 ItemStack item = shop.getItemStack("Shop.Items." + key);
@@ -62,7 +65,7 @@ public class DSSFunction {
                 inv.setItem(Integer.parseInt(key), r);
             }
         }
-        p.openInventory(inv);
+        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
     }
 
     public static void openShop(CommandSender p, String name, String username) {
@@ -131,7 +134,7 @@ public class DSSFunction {
     }
 
     public static void removeAllShop(CommandSender p) {
-        for(String name : plugin.shops.keySet()) {
+        for (String name : plugin.shops.keySet()) {
             File file = new File(plugin.getDataFolder() + "/shops/" + name + ".yml");
             file.delete();
         }
@@ -213,13 +216,13 @@ public class DSSFunction {
     public static void openShopShowCase(Player p, String name) {
         plugin.currentEditShop.put(p.getUniqueId(), name);
         YamlConfiguration shop = plugin.shops.get(name);
-        Inventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
+        DInventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 inv.setItem(Integer.parseInt(key), shop.getItemStack("Shop.Items." + key));
             }
         }
-        p.openInventory(inv);
+        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
     }
 
     public static void saveShopShowCase(Player p, Inventory inv) {
@@ -317,7 +320,7 @@ public class DSSFunction {
         r.setAmount(1);
         if (isSellAll) {
             amount = getAllItemCount(p.getInventory().getStorageContents(), r);
-            if(amount == 0) {
+            if (amount == 0) {
                 p.sendMessage(prefix + "판매할 아이템이 충분하지 않습니다.");
                 return;
             }
