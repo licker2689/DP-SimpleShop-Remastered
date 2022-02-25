@@ -131,7 +131,7 @@ public class DSSFunction {
     }
 
     public static void removeAllShop(CommandSender p) {
-        for(String name : plugin.shops.keySet()) {
+        for (String name : plugin.shops.keySet()) {
             File file = new File(plugin.getDataFolder() + "/shops/" + name + ".yml");
             file.delete();
         }
@@ -281,7 +281,7 @@ public class DSSFunction {
         r.setItemMeta(im);
         r.setAmount(1);
         ItemStack[] items = p.getInventory().getStorageContents();
-        Inventory inv = Bukkit.createInventory(null, 27, "logic");
+        Inventory inv = Bukkit.createInventory(null, 36, "logic");
         inv.setContents(items);
         HashMap<Integer, ItemStack> leftover = new HashMap<>();
         for (int i = 0; i < amount; i++) {
@@ -317,7 +317,7 @@ public class DSSFunction {
         r.setAmount(1);
         if (isSellAll) {
             amount = getAllItemCount(p.getInventory().getStorageContents(), r);
-            if(amount == 0) {
+            if (amount == 0) {
                 p.sendMessage(prefix + "판매할 아이템이 충분하지 않습니다.");
                 return;
             }

@@ -284,7 +284,7 @@ public class DSSFunction {
         r.setItemMeta(im);
         r.setAmount(1);
         ItemStack[] items = p.getInventory().getStorageContents();
-        Inventory inv = Bukkit.createInventory(null, 27, "logic");
+        Inventory inv = Bukkit.createInventory(null, 36, "logic");
         inv.setContents(items);
         HashMap<Integer, ItemStack> leftover = new HashMap<>();
         for (int i = 0; i < amount; i++) {
