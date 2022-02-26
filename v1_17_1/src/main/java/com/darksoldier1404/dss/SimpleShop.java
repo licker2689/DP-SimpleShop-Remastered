@@ -46,5 +46,9 @@ public class SimpleShop extends JavaPlugin {
         getCommand("상점").setExecutor(new DSSCommand());
 
     }
+    
+    public void onDisable() {
+        DSSFunction.saveAllShop();
+    }
 
 }
