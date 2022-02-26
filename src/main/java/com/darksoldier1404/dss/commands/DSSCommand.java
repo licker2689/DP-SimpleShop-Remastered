@@ -36,14 +36,14 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(prefix + lang.get("shop_cmd_open"));
             return false;
         }
-        if (args[0].equals("오픈")) {
+        if (args[0].equals("오픈") || args[0].equalsIgnoreCase("open")) {
             if (args.length == 1) {
-                sender.sendMessage(prefix + "오픈할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             if (args.length == 2) {
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage(prefix + "콘솔에서는 사용 불가합니다.");
+                    sender.sendMessage(prefix + lang.get("shop_cmd_cant_use_in_console"));
                     return false;
                 }
                 DSSFunction.openShop((Player) sender, args[1]);
@@ -51,24 +51,24 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
             }
             if (args.length == 3) {
                 if (!sender.hasPermission("dss.admin")) {
-                    sender.sendMessage(prefix + "권한이 없습니다.");
+                    sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                     return false;
                 }
                 DSSFunction.openShop(sender, args[1], args[2]);
                 return false;
             }
         }
-        if (args[0].equals("생성")) {
+        if (args[0].equals("생성") || args[0].equalsIgnoreCase("create")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "생성할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             if (args.length == 2) {
-                sender.sendMessage(prefix + "생성할 상점의 줄을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_line"));
                 return false;
             }
             if (args.length == 3) {
@@ -76,43 +76,43 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
                 return false;
             }
         }
-        if (args[0].equals("진열")) {
+        if (args[0].equals("진열") || args[0].equalsIgnoreCase("display")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "진열할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             if (args.length == 2) {
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage(prefix + "콘솔에서는 사용 불가합니다.");
+                    sender.sendMessage(prefix + lang.get("shop_cmd_cant_use_in_console"));
                     return false;
                 }
                 DSSFunction.openShopShowCase((Player) sender, args[1]);
                 return false;
             }
         }
-        if (args[0].equals("가격")) {
+        if (args[0].equals("가격") || args[0].equalsIgnoreCase("price")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "상점의 이름을 입력해주세요");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             if (args.length == 2) {
-                sender.sendMessage(prefix + "슬롯을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_slot"));
                 return false;
             }
             if (args.length == 3) {
-                sender.sendMessage(prefix + "B 또는 S를 입력하여 가격 옵션을 선택해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_buy_or_sell"));
                 return false;
             }
             if (args.length == 4) {
-                sender.sendMessage(prefix + "가격을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_price"));
                 return false;
             }
             int slot;
@@ -120,7 +120,7 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
             try {
                 slot = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(prefix + "옳바르지 않은 슬롯입니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_slot_must_be_number"));
                 return false;
             }
             boolean isBuying;
@@ -129,13 +129,13 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
             } else if (args[3].equalsIgnoreCase("s")) {
                 isBuying = false;
             } else {
-                sender.sendMessage(prefix + "가격 옵션이 옳바르지 않습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_buy_or_sell_unvalid"));
                 return false;
             }
             try {
                 price = Double.parseDouble(args[4]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(prefix + "옳바르지 않은 가격입니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_price_must_be_number"));
                 return false;
             }
             if (isBuying) {
@@ -145,60 +145,60 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
             }
             return false;
         }
-        if (args[0].equals("타이틀")) {
+        if (args[0].equals("타이틀") || args[0].equalsIgnoreCase("title")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "설정할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             if (args.length == 2) {
-                sender.sendMessage(prefix + "설정할 상점의 타이틀을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_title"));
                 return false;
             }
             DSSFunction.setTitle(sender, args[1], args);
             return false;
         }
-        if (args[0].equals("초기화")) {
+        if (args[0].equals("초기화") || args[0].equalsIgnoreCase("reset")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "초기화할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             DSSFunction.clearShop(sender, args[1]);
             return false;
         }
-        if (args[0].equals("삭제")) {
+        if (args[0].equals("삭제") || args[0].equalsIgnoreCase("delete")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             if (args.length == 1) {
-                sender.sendMessage(prefix + "삭제할 상점의 이름을 입력해주세요.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_require_name"));
                 return false;
             }
             DSSFunction.removeShop(sender, args[1]);
             return false;
         }
-        if (args[0].equals("전체삭제")) {
+        if (args[0].equals("전체삭제") || args[0].equalsIgnoreCase("deleteall")) {
             if (!sender.hasPermission("dss.admin")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
             DSSFunction.removeAllShop(sender);
             return false;
         }
-        if (args[0].equals("목록")) {
+        if (args[0].equals("목록") || args[0].equalsIgnoreCase("list")) {
             if (!sender.hasPermission("dss.list")) {
-                sender.sendMessage(prefix + "권한이 없습니다.");
+                sender.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
                 return false;
             }
-            sender.sendMessage(prefix + "<<< 상점 목록 >>>");
+            sender.sendMessage(prefix + lang.get("shop_cmd_list_header"));
             plugin.shops.keySet().forEach(s -> sender.sendMessage(prefix + s));
             return false;
         }

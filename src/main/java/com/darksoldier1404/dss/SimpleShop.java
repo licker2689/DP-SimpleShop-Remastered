@@ -37,13 +37,14 @@ public class SimpleShop extends JavaPlugin {
         Plugin pl = getServer().getPluginManager().getPlugin("DPP-Core");
         if(pl == null) {
             getLogger().warning("DPP-Core 플러그인이 설치되어있지 않습니다.");
+            getLogger().warning("DPP-Core plugin is not installed.");
             plugin.setEnabled(false);
             return;
         }
         core = (DPPCore) pl;
         config = ConfigUtils.loadDefaultPluginConfig(plugin);
         prefix = ChatColor.translateAlternateColorCodes('&', config.getString("Settings.prefix"));
-        lang = new DLang(config.getString("Lang") == null ? "Korean" : config.getString("Lang"), plugin);
+        lang = new DLang(config.getString("Settings.Lang") == null ? "Korean" : config.getString("Settings.Lang"), plugin);
         DSSFunction.loadAllShops();
         plugin.getServer().getPluginManager().registerEvents(new DSSEvent(), plugin);
         getCommand("상점").setExecutor(new DSSCommand());

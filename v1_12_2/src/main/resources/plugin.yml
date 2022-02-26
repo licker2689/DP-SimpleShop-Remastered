@@ -1,5 +1,5 @@
 name: DP-SimpleShop
-version: 1.0.0.8
+version: 1.0.1.9
 main: com.darksoldier1404.dss.SimpleShop
 api-version: 1.12
 authors: [ DEAD_POOLIO_ ]
@@ -8,3 +8,4 @@ depend:
   - Essentials
 commands:
   상점:
+    aliases: [shop, dshop, dss]

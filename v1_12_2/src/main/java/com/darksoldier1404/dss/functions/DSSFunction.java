@@ -2,6 +2,7 @@ package com.darksoldier1404.dss.functions;
 
 import com.darksoldier1404.dppc.api.essentials.MoneyAPI;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
+import com.darksoldier1404.dppc.lang.DLang;
 import com.darksoldier1404.dppc.utils.NBT;
 import com.darksoldier1404.dss.SimpleShop;
 import com.google.common.collect.Lists;
@@ -26,14 +27,15 @@ import java.util.*;
 public class DSSFunction {
     private static final SimpleShop plugin = SimpleShop.getInstance();
     private static final String prefix = plugin.prefix;
+    private static final DLang lang = plugin.lang;
 
     public static void openShop(Player p, String name) {
         if (!plugin.shops.containsKey(name)) {
-            p.sendMessage(prefix + "해당 상점이 존재하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
             return;
         }
         YamlConfiguration shop = plugin.shops.get(name);
-        DInventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
+        Inventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 ItemStack item = shop.getItemStack("Shop.Items." + key);
@@ -44,19 +46,19 @@ public class DSSFunction {
                 }
                 if (shop.getString("Shop.Prices." + key + ".price") == null || shop.getInt("Shop.Prices." + key + ".price") == -1) {
                     item = NBT.setDoubleTag(item, "price", -1);
-                    lore.add("§c구매 불가");
+                    lore.add(lang.get("shop_func_lore_cant_buy"));
                 } else {
                     double price = shop.getDouble("Shop.Prices." + key + ".price");
                     item = NBT.setDoubleTag(item, "price", price);
-                    lore.add("§a좌클릭시 구매 | 가격 : " + price);
+                    lore.add(lang.getWithArgs("shop_func_lore_can_buy", String.valueOf(price)));
                 }
                 if (shop.getString("Shop.Prices." + key + ".sellPrice") == null || shop.getInt("Shop.Prices." + key + ".sellPrice") == -1) {
                     item = NBT.setDoubleTag(item, "sellPrice", -1);
-                    lore.add("§c판매 불가");
+                    lore.add(lang.get("shop_func_lore_cant_sell"));
                 } else {
                     double price = shop.getDouble("Shop.Prices." + key + ".sellPrice");
                     item = NBT.setDoubleTag(item, "sellPrice", price);
-                    lore.add("§a우클릭시 판매 | 가격 : " + price + " (휠 클릭시 모두 판매)");
+                    lore.add(lang.getWithArgs("shop_func_lore_can_sell", String.valueOf(price)));
                 }
                 ItemStack r = item.clone();
                 ItemMeta rm = r.getItemMeta();
@@ -70,12 +72,12 @@ public class DSSFunction {
 
     public static void openShop(CommandSender p, String name, String username) {
         if (!p.hasPermission("dss.admin")) {
-            p.sendMessage(prefix + "권한이 없습니다.");
+            p.sendMessage(prefix + lang.get("shop_cmd_permission_required"));
             return;
         }
         Player target = plugin.getServer().getPlayer(username);
         if (target == null) {
-            p.sendMessage(prefix + "해당 유저는 존재하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_player_is_not_online"));
             return;
         }
         openShop(target, name);
@@ -86,15 +88,15 @@ public class DSSFunction {
         try {
             l = Integer.parseInt(line);
         } catch (NumberFormatException e) {
-            p.sendMessage(prefix + "잘못된 숫자입니다.");
+            p.sendMessage(prefix + lang.get("shop_cmd_line_is_not_number"));
             return;
         }
         if (l < 1 || l > 6) {
-            p.sendMessage(prefix + "상점의 줄은 1~6줄 사이여야 합니다.");
+            p.sendMessage(prefix + lang.get("shop_cmd_line_is_not_valid"));
             return;
         }
         createShop(name, l);
-        p.sendMessage(prefix + "상점을 생성했습니다.");
+        p.sendMessage(prefix + lang.get("shop_func_shop_created"));
     }
 
     public static void setTitle(CommandSender p, String name, String[] args) {
@@ -102,9 +104,9 @@ public class DSSFunction {
             YamlConfiguration shop = plugin.shops.get(name);
             shop.set("Shop.Title", getColoredText(args, 2));
             saveData(name, "shops", shop);
-            p.sendMessage(prefix + "상점의 타이틀을 설정했습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_title_set"));
         } else {
-            p.sendMessage(prefix + "해당 상점이 존재하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
         }
     }
 
@@ -127,9 +129,9 @@ public class DSSFunction {
             plugin.shops.remove(name);
             File file = new File(plugin.getDataFolder() + "/shops/" + name + ".yml");
             file.delete();
-            p.sendMessage(prefix + "상점을 삭제했습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_removed"));
         } else {
-            p.sendMessage(prefix + "해당 상점이 존재하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
         }
     }
 
@@ -138,7 +140,7 @@ public class DSSFunction {
             File file = new File(plugin.getDataFolder() + "/shops/" + name + ".yml");
             file.delete();
         }
-        p.sendMessage(prefix + "모든 상점을 삭제하였습니다.");
+        p.sendMessage(prefix + lang.get("shop_func_all_shops_removed"));
     }
 
     public static void clearShop(CommandSender p, String name) {
@@ -147,9 +149,9 @@ public class DSSFunction {
             shop.set("Shop.Items", null);
             shop.set("Shop.Prices", null);
             saveData(name, "shops", shop);
-            p.sendMessage(prefix + "상점을 초기화했습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_cleared"));
         } else {
-            p.sendMessage(prefix + "해당 상점이 존재하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
         }
     }
 
@@ -216,7 +218,7 @@ public class DSSFunction {
     public static void openShopShowCase(Player p, String name) {
         plugin.currentEditShop.put(p.getUniqueId(), name);
         YamlConfiguration shop = plugin.shops.get(name);
-        DInventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
+        Inventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 inv.setItem(Integer.parseInt(key), shop.getItemStack("Shop.Items." + key));
@@ -231,7 +233,7 @@ public class DSSFunction {
         for (int i = 0; i < inv.getSize(); i++) {
             shop.set("Shop.Items." + i, inv.getItem(i));
         }
-        p.sendMessage(prefix + name + " 상점을 저장했습니다.");
+        p.sendMessage(prefix + lang.getWithArgs("shop_func_shop_saved", name));
         saveData(name, "shops", shop);
         plugin.currentEditShop.remove(p.getUniqueId());
     }
@@ -241,9 +243,9 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".price", price);
             saveData(name, "shops", shop);
-            p.sendMessage(prefix + "구매 가격을 " + price + "원으로 설정했습니다.");
+            p.sendMessage(prefix + lang.getWithArgs("shop_func_price_set", String.valueOf(price)));
         } else {
-            p.sendMessage(prefix + "아이템이 없습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));
         }
     }
 
@@ -252,25 +254,25 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".sellPrice", price);
             saveData(name, "shops", shop);
-            p.sendMessage(prefix + "판매 가격을 " + price + "원으로 설정했습니다.");
+            p.sendMessage(prefix + lang.getWithArgs("shop_func_sell_price_set", String.valueOf(price)));
         } else {
-            p.sendMessage(prefix + "아이템이 없습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));
         }
     }
 
     public static void buyMultiple(Player p, ItemStack item, int amount) {
         if (item == null) return;
         if (NBT.getDoubleTag(item, "price") == 0 || NBT.getDoubleTag(item, "price") == -1) {
-            p.sendMessage(prefix + "구매할 수 없는 아이템입니다.");
+            p.sendMessage(prefix + lang.get("shop_func_cant_buy_item"));
             return;
         }
         double price = NBT.getDoubleTag(item, "price") * amount;
         if (p.getInventory().firstEmpty() == -1) {
-            p.sendMessage(prefix + "인벤토리가 꽉 찼습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_inventory_full"));
             return;
         }
         if (!MoneyAPI.hasEnoughMoney(p, price)) {
-            p.sendMessage(prefix + "돈이 부족합니다.");
+            p.sendMessage(prefix + lang.get("shop_func_not_enough_money"));
             return;
         }
         ItemStack r = item.clone();
@@ -295,16 +297,16 @@ public class DSSFunction {
                 p.getInventory().addItem(r);
             }
             MoneyAPI.takeMoney(p, price);
-            p.sendMessage(prefix + "아이템을 구매하였습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_bought_item"));
         } else {
-            p.sendMessage(prefix + "인벤토리 공간이 부족합니다.");
+            p.sendMessage(prefix + lang.get("shop_func_inventory_full"));
         }
     }
 
     public static void sellMultiple(Player p, ItemStack item, int amount, boolean isSellAll) {
         if (item == null) return;
         if (NBT.getDoubleTag(item, "sellPrice") == 0 || NBT.getDoubleTag(item, "sellPrice") == -1) {
-            p.sendMessage(prefix + "판매할 수 없는 아이템입니다.");
+            p.sendMessage(prefix + lang.get("shop_func_cant_sell_item"));
             return;
         }
         double price = NBT.getDoubleTag(item, "sellPrice") * amount;
@@ -321,7 +323,7 @@ public class DSSFunction {
         if (isSellAll) {
             amount = getAllItemCount(p.getInventory().getStorageContents(), r);
             if (amount == 0) {
-                p.sendMessage(prefix + "판매할 아이템이 충분하지 않습니다.");
+                p.sendMessage(prefix + lang.get("shop_func_not_enough_item"));
                 return;
             }
             price = NBT.getDoubleTag(item, "sellPrice") * amount;
@@ -346,11 +348,11 @@ public class DSSFunction {
             }
             p.getInventory().setStorageContents(items);
         } else {
-            p.sendMessage(prefix + "판매할 아이템이 충분하지 않습니다.");
+            p.sendMessage(prefix + lang.get("shop_func_not_enough_item"));
             return;
         }
         MoneyAPI.addMoney(p, price);
-        p.sendMessage(prefix + "아이템을 " + price + "원에 판매하였습니다.");
+        p.sendMessage(prefix + lang.getWithArgs("shop_func_sold_item", String.valueOf(price)));
     }
 
     public static boolean hasEnoughItem(ItemStack[] items, ItemStack item, int amount) {
@@ -385,14 +387,14 @@ public class DSSFunction {
         lore.remove(lore.size() - 1);
         lore.remove(lore.size() - 1);
         if (price <= 0) {
-            lore.add("§c구매 불가");
+            lore.add(lang.get("shop_func_lore_cant_buy"));
         } else {
-            lore.add("§a구매 가격 : " + price);
+            lore.add(lang.getWithArgs("shop_func_lore_buy_price", String.valueOf(price)));
         }
         if (sellPrice <= 0) {
-            lore.add("§c판매 불가");
+            lore.add(lang.get("shop_func_lore_cant_sell"));
         } else {
-            lore.add("§a판매 가격 : " + sellPrice);
+            lore.add(lang.getWithArgs("shop_func_lore_sell_price", String.valueOf(sellPrice)));
         }
         im.setLore(lore);
         item.setItemMeta(im);
@@ -400,16 +402,16 @@ public class DSSFunction {
     }
 
     public static void openBuyOption(Player p, ItemStack item, boolean isBuying) {
-        DInventory inv = new DInventory(null, isBuying ? "§1구매 옵션" : "§1판매 옵션", 54, true, plugin);
+        DInventory inv = new DInventory(null, isBuying ? lang.get("shop_func_buy_option_title") : lang.get("shop_func_sell_option_title"), 54, true, plugin);
         inv.setPages(1);
         ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0, (byte) 7);
         ItemStack prev = NBT.setStringTag(new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 9), "prev", "true");
         ItemMeta im = prev.getItemMeta();
-        im.setDisplayName("§c이전 페이지");
+        im.setDisplayName(lang.get("prev_page"));
         prev.setItemMeta(im);
         ItemStack next = NBT.setStringTag(new ItemStack(Material.INK_SACK, 1, (short) 0, (byte) 10), "next", "true");
         im = next.getItemMeta();
-        im.setDisplayName("§a다음 페이지");
+        im.setDisplayName(lang.get("next_page"));
         next.setItemMeta(im);
         inv.setPageTools(new ItemStack[]{pane, pane, prev, pane, pane, pane, next, pane, pane});
         double price = NBT.getDoubleTag(item, "price");
@@ -432,7 +434,7 @@ public class DSSFunction {
         inv.setItem(24, NBT.setIntTag(item, "amount", 64));
         ItemStack info = new ItemStack(Material.PAPER);
         im = info.getItemMeta();
-        im.setDisplayName("§1단일 " + (isBuying ? "구매" : "판매"));
+        im.setDisplayName(lang.get("item_title_single") + (isBuying ? lang.get("buy") : lang.get("sell")));
         info.setItemMeta(im);
         inv.setItem(4, info);
         inv.setPageContent(0, inv.getContents());
@@ -448,11 +450,11 @@ public class DSSFunction {
             i = i + 2;
         }
         im = info.getItemMeta();
-        im.setDisplayName("§1세트 " + (isBuying ? "구매" : "판매"));
+        im.setDisplayName(lang.get("item_title_multiple") + (isBuying ? lang.get("buy") : lang.get("sell")));
         info.setItemMeta(im);
         inv.setItem(4, info);
         inv.setPageContent(1, inv.getContents());
         inv.update();
-        p.openInventory(inv);
+        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
     }
 }
