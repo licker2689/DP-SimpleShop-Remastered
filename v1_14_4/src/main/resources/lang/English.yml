@@ -11,6 +11,8 @@ shop_cmd_delete: "/shop delete <name> - Delete shop"
 shop_cmd_delete_all: "/shop deleteall - Delete all shops"
 shop_cmd_open: "/shop open <name> - Open shop"
 shop_cmd_open_other: "/shop open <name> <username> - Open shop to player"
+shop_cmd_reload: "/shop reload - Reload shop data and config"
+shop_cmd_reload_done: "Shop data and config reloaded"
 
 # function message
 shop_func_shop_is_not_exist: "Shop is not exist"

@@ -27,6 +27,7 @@ public class SimpleShop extends JavaPlugin {
     public final Map<UUID, String> currentEditShop = new HashMap<>();
     public final Map<UUID, ItemStack> currentItem = new HashMap<>();
     public final Map<UUID, Boolean> isBuying = new HashMap<>();
+    public boolean preventInvClose;
 
     public static SimpleShop getInstance() {
         return plugin;
@@ -43,6 +44,7 @@ public class SimpleShop extends JavaPlugin {
         }
         core = (DPPCore) pl;
         config = ConfigUtils.loadDefaultPluginConfig(plugin);
+        preventInvClose = config.getBoolean("Settings.preventInvClose");
         prefix = ChatColor.translateAlternateColorCodes('&', config.getString("Settings.prefix"));
         lang = new DLang(config.getString("Settings.Lang") == null ? "Korean" : config.getString("Settings.Lang"), plugin);
         DSSFunction.loadAllShops();

@@ -57,15 +57,19 @@ public class DSSEvent implements Listener {
                                 if (plugin.isBuying.containsKey(p.getUniqueId())) {
                                     if (plugin.isBuying.get(p.getUniqueId())) {
                                         DSSFunction.buyMultiple(p, plugin.currentItem.get(p.getUniqueId()), NBT.getIntegerTag(e.getCurrentItem(), "amount"));
-                                        plugin.currentItem.remove(p.getUniqueId());
-                                        plugin.isBuying.remove(p.getUniqueId());
-                                        p.closeInventory();
+                                        if(!plugin.preventInvClose) {
+                                            p.closeInventory();
+                                            plugin.currentItem.remove(p.getUniqueId());
+                                            plugin.isBuying.remove(p.getUniqueId());
+                                        }
                                         return;
                                     } else {
                                         DSSFunction.sellMultiple(p, plugin.currentItem.get(p.getUniqueId()), NBT.getIntegerTag(e.getCurrentItem(), "amount"), false);
-                                        plugin.currentItem.remove(p.getUniqueId());
-                                        plugin.isBuying.remove(p.getUniqueId());
-                                        p.closeInventory();
+                                        if(!plugin.preventInvClose) {
+                                            p.closeInventory();
+                                            plugin.currentItem.remove(p.getUniqueId());
+                                            plugin.isBuying.remove(p.getUniqueId());
+                                        }
                                         return;
                                     }
                                 }
@@ -81,7 +85,6 @@ public class DSSEvent implements Listener {
                             plugin.currentItem.put(p.getUniqueId(), e.getCurrentItem());
                             plugin.isBuying.put(p.getUniqueId(), false);
                             DSSFunction.sellMultiple(p, plugin.currentItem.get(p.getUniqueId()), NBT.getIntegerTag(e.getCurrentItem(), "amount"), true);
-                            p.closeInventory();
                             return;
                         }
                     }
