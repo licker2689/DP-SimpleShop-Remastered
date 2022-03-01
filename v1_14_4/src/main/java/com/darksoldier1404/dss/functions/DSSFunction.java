@@ -3,6 +3,7 @@ package com.darksoldier1404.dss.functions;
 import com.darksoldier1404.dppc.api.essentials.MoneyAPI;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
 import com.darksoldier1404.dppc.lang.DLang;
+import com.darksoldier1404.dppc.utils.ConfigUtils;
 import com.darksoldier1404.dppc.utils.NBT;
 import com.darksoldier1404.dss.SimpleShop;
 import com.google.common.collect.Lists;
@@ -453,5 +454,12 @@ public class DSSFunction {
         inv.setPageContent(1, inv.getContents());
         inv.update();
         p.openInventory(inv);
+    }
+
+    public static void reloadConfig() {
+        plugin.config = ConfigUtils.reloadPluginConfig(plugin, plugin.config);
+        plugin.preventInvClose = plugin.config.getBoolean("Settings.preventInvClose");
+        plugin.lang = new DLang(plugin.config.getString("Settings.Lang") == null ? "Korean" : plugin.config.getString("Settings.Lang"), plugin);
+        DSSFunction.loadAllShops();
     }
 }

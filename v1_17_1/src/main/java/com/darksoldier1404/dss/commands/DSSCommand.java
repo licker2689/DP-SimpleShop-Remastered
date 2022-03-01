@@ -9,7 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class DSSCommand implements CommandExecutor, TabCompleter {
@@ -29,9 +31,8 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(prefix + lang.get("shop_cmd_reset"));
                 sender.sendMessage(prefix + lang.get("shop_cmd_delete"));
                 sender.sendMessage(prefix + lang.get("shop_cmd_delete_all"));
-            }
-            if (sender.hasPermission("dss.list")) {
                 sender.sendMessage(prefix + lang.get("shop_cmd_open_other"));
+                sender.sendMessage(prefix + lang.get("shop_cmd_reload"));
             }
             sender.sendMessage(prefix + lang.get("shop_cmd_open"));
             return false;
@@ -207,6 +208,23 @@ public class DSSCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (sender.hasPermission("dss.admin")) {
+            if (args.length == 1) {
+                if (lang.getCurrentLang().getString("Lang").equals("Korean")) {
+                    return Arrays.asList("생성", "타이틀", "진열", "가격", "목록", "초기화", "삭제", "전체삭제", "오픈");
+                } else {
+                    return Arrays.asList("create", "title", "display", "price", "list", "reset", "delete", "deleteall", "open");
+                }
+            }
+            if (args.length == 2) {
+                if (!(args[1].equals("목록")
+                        || args[1].equalsIgnoreCase("list")
+                        || args[1].equals("전체삭제")
+                        || args[1].equalsIgnoreCase("deleteall"))) {
+                    return plugin.shops.keySet().stream().collect(Collectors.toList());
+                }
+            }
+        }
         return null;
     }
 }

@@ -1,3 +1,4 @@
 Settings:
-  prefix: "&f[ &a상점 &f] "
-  Lang: Korean
+  prefix: "&f[ &aSimpleShop &f] "
+  Lang: English
+  preventInvClose: true

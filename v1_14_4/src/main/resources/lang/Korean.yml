@@ -11,6 +11,8 @@ shop_cmd_delete: "/상점 삭제 <이름> - 상점을 삭제합니다."
 shop_cmd_delete_all: "/상점 전체삭제 - 모든 상점을 삭제합니다."
 shop_cmd_open: "/상점 오픈 <이름> - 해당 상점을 오픈합니다."
 shop_cmd_open_other: "/상점 오픈 <이름> <닉네임> - 해당 상점을 해당 유저에게 오픈합니다."
+shop_cmd_reload: "/상점 리로드 - 모든 콘피그 설정을 리로드합니다."
+shop_cmd_reload_done: "모든 콘피그 설정을 리로드 하였습니다."
 
 # function message
 shop_func_shop_is_not_exist: "해당 상점이 존재하지 않습니다."
