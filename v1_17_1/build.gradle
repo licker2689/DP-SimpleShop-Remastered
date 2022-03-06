@@ -9,7 +9,7 @@ tasks.withType(JavaCompile) {
 }
 
 group 'github.com/darksoldier1404'
-version = '1.0.2.10'
+version = '1.0.2.11'
 configurations {
     jar.archiveName = 'DP-SimpleShop-_' + name + '-' + version + '.jar'
 }
@@ -23,7 +23,7 @@ jar{
 repositories {
     mavenCentral()
     maven {
-        url "http://dpnw.site:8081/repository/maven-public/"
+        url "http://dpp.dpnw.site:8081/repository/maven-public/"
         allowInsecureProtocol = true
     }
 }

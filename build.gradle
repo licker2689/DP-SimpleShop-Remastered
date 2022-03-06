@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.darksoldier1404'
-version = '1.0.2.10'
+version = '1.0.2.11'
 
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
@@ -59,7 +59,7 @@ task DS_BUILD {
 repositories {
     mavenCentral()
     maven {
-        url "http://dpnw.site:8081/repository/maven-public/"
+        url "http://dpp.dpnw.site:8081/repository/maven-public/"
         allowInsecureProtocol = true
     }
 }
@@ -67,8 +67,8 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    compileOnly 'org.bukkit.craftbukkit:craftbukkit:R0.1:1.18'
-    compileOnly 'org.spigotmc:spigot-api:R0.1:1.18'
+    compileOnly 'org.bukkit.craftbukkit:craftbukkit:R0.1-1.18'
+    compileOnly 'org.spigotmc:spigot-api-R0.1:1.18'
     compileOnly 'com.darksoldier1404.dppc:DPP-Core:1.18.1-SNAPSHOT'
 }
 
