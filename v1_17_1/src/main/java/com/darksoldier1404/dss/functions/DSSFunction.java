@@ -102,6 +102,7 @@ public class DSSFunction {
             YamlConfiguration shop = plugin.shops.get(name);
             shop.set("Shop.Title", getColoredText(args, 2));
             saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.get("shop_func_shop_title_set"));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
@@ -147,6 +148,7 @@ public class DSSFunction {
             shop.set("Shop.Items", null);
             shop.set("Shop.Prices", null);
             saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.get("shop_func_shop_cleared"));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
@@ -187,6 +189,7 @@ public class DSSFunction {
         shop.set("Shop.Line", line);
         saveData(name, "shops", shop);
         plugin.shops.put(name, shop);
+        plugin.shops.put(name, shop);
         return true;
     }
 
@@ -202,6 +205,7 @@ public class DSSFunction {
     public static void saveAllShop() {
         plugin.shops.forEach((name, shop) -> {
             saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
         });
     }
 
@@ -233,6 +237,7 @@ public class DSSFunction {
         }
         p.sendMessage(prefix + lang.getWithArgs("shop_func_shop_saved", name));
         saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
         plugin.currentEditShop.remove(p.getUniqueId());
     }
 
@@ -241,6 +246,7 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".price", price);
             saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.getWithArgs("shop_func_price_set", String.valueOf(price)));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));
@@ -252,6 +258,7 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".sellPrice", price);
             saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.getWithArgs("shop_func_sell_price_set", String.valueOf(price)));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));

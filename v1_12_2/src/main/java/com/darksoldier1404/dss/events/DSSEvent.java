@@ -20,15 +20,13 @@ public class DSSEvent implements Listener {
         Player p = (Player) e.getPlayer();
         if (e.getInventory() instanceof DInventory) {
             DInventory di = (DInventory) e.getInventory();
-            if (di.isValidHandler(plugin)) {
-                if (!plugin.currentEditShop.containsKey(p.getUniqueId())) {
-                    plugin.currentItem.remove(p.getUniqueId());
-                    plugin.isBuying.remove(p.getUniqueId());
-                    return;
-                }
-                if (e.getView().getTitle().equals(plugin.currentEditShop.get(p.getUniqueId()))) {
-                    DSSFunction.saveShopShowCase(p, di);
-                }
+            if (!plugin.currentEditShop.containsKey(p.getUniqueId())) {
+                plugin.currentItem.remove(p.getUniqueId());
+                plugin.isBuying.remove(p.getUniqueId());
+                return;
+            }
+            if (e.getView().getTitle().equals(plugin.currentEditShop.get(p.getUniqueId()))) {
+                DSSFunction.saveShopShowCase(p, di);
             }
         }
     }
@@ -37,7 +35,10 @@ public class DSSEvent implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (e.getInventory() instanceof DInventory) {
-            if (plugin.currentEditShop.containsKey(p.getUniqueId())) return;
+            if (plugin.currentEditShop.containsKey(p.getUniqueId())){
+                System.out.println("settings...");
+                return;
+            }
             DInventory di = (DInventory) e.getInventory();
             if (di.isValidHandler(plugin)) {
                 e.setCancelled(true);
@@ -57,7 +58,7 @@ public class DSSEvent implements Listener {
                                 if (plugin.isBuying.containsKey(p.getUniqueId())) {
                                     if (plugin.isBuying.get(p.getUniqueId())) {
                                         DSSFunction.buyMultiple(p, plugin.currentItem.get(p.getUniqueId()), NBT.getIntegerTag(e.getCurrentItem(), "amount"));
-                                        if(!plugin.preventInvClose) {
+                                        if (!plugin.preventInvClose) {
                                             p.closeInventory();
                                             plugin.currentItem.remove(p.getUniqueId());
                                             plugin.isBuying.remove(p.getUniqueId());
@@ -65,7 +66,7 @@ public class DSSEvent implements Listener {
                                         return;
                                     } else {
                                         DSSFunction.sellMultiple(p, plugin.currentItem.get(p.getUniqueId()), NBT.getIntegerTag(e.getCurrentItem(), "amount"), false);
-                                        if(!plugin.preventInvClose) {
+                                        if (!plugin.preventInvClose) {
                                             p.closeInventory();
                                             plugin.currentItem.remove(p.getUniqueId());
                                             plugin.isBuying.remove(p.getUniqueId());
@@ -80,7 +81,7 @@ public class DSSEvent implements Listener {
                         }
                         return;
                     }
-                    if(ct.isCreativeAction()) {
+                    if (ct.isCreativeAction()) {
                         if (NBT.hasTagKey(e.getCurrentItem(), "sellPrice")) {
                             plugin.currentItem.put(p.getUniqueId(), e.getCurrentItem());
                             plugin.isBuying.put(p.getUniqueId(), false);
@@ -98,6 +99,8 @@ public class DSSEvent implements Listener {
                     }
                 }
             }
+        }else{
+            System.out.println("its not DInventory");
         }
     }
 }

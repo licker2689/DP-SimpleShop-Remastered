@@ -9,7 +9,7 @@ tasks.withType(JavaCompile) {
 }
 
 group 'github.com/darksoldier1404'
-version = '1.0.2.11'
+version = '1.0.2.12'
 configurations {
     jar.archiveName = 'DP-SimpleShop-_' + name + '-' + version + '.jar'
 }

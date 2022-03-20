@@ -7,6 +7,8 @@ import com.darksoldier1404.dppc.utils.ConfigUtils;
 import com.darksoldier1404.dppc.utils.NBT;
 import com.darksoldier1404.dss.SimpleShop;
 import com.google.common.collect.Lists;
+import net.minecraft.server.v1_12_R1.EntityHuman;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftContainer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryView;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -105,6 +108,7 @@ public class DSSFunction {
             YamlConfiguration shop = plugin.shops.get(name);
             shop.set("Shop.Title", getColoredText(args, 2));
             saveData(name, "shops", shop);
+            plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.get("shop_func_shop_title_set"));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
@@ -150,6 +154,7 @@ public class DSSFunction {
             shop.set("Shop.Items", null);
             shop.set("Shop.Prices", null);
             saveData(name, "shops", shop);
+            plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.get("shop_func_shop_cleared"));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_shop_is_not_exist"));
@@ -190,6 +195,7 @@ public class DSSFunction {
         shop.set("Shop.Line", line);
         saveData(name, "shops", shop);
         plugin.shops.put(name, shop);
+        plugin.shops.put(name, shop);
         return true;
     }
 
@@ -205,6 +211,7 @@ public class DSSFunction {
     public static void saveAllShop() {
         plugin.shops.forEach((name, shop) -> {
             saveData(name, "shops", shop);
+            plugin.shops.put(name, shop);
         });
     }
 
@@ -236,6 +243,7 @@ public class DSSFunction {
         }
         p.sendMessage(prefix + lang.getWithArgs("shop_func_shop_saved", name));
         saveData(name, "shops", shop);
+        plugin.shops.put(name, shop);
         plugin.currentEditShop.remove(p.getUniqueId());
     }
 
@@ -244,6 +252,7 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".price", price);
             saveData(name, "shops", shop);
+            plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.getWithArgs("shop_func_price_set", String.valueOf(price)));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));
@@ -255,6 +264,7 @@ public class DSSFunction {
         if (shop.getItemStack("Shop.Items." + slot) != null) {
             shop.set("Shop.Prices." + slot + ".sellPrice", price);
             saveData(name, "shops", shop);
+            plugin.shops.put(name, shop);
             p.sendMessage(prefix + lang.getWithArgs("shop_func_sell_price_set", String.valueOf(price)));
         } else {
             p.sendMessage(prefix + lang.get("shop_func_item_is_not_exist"));
