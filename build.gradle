@@ -10,7 +10,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 configurations {
-    jar.archiveName = 'DP-SimpleShop-_v1_18_1-'+version+'.jar'
+    jar.archiveName = 'DP-SimpleShop-_v1_18_2-'+version+'.jar'
 }
 build {
     sourceCompatibility = 17
@@ -67,9 +67,9 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    compileOnly 'org.bukkit.craftbukkit:craftbukkit:R0.1-1.18'
-    compileOnly 'org.spigotmc:spigot-api-R0.1:1.18'
-    compileOnly 'com.darksoldier1404.dppc:DPP-Core:1.18.1-SNAPSHOT'
+    compileOnly 'org.bukkit.craftbukkit:craftbukkit:R0.1:1.18.2'
+    compileOnly 'org.spigotmc:spigot-api:R0.1:1.18.2'
+    compileOnly 'com.darksoldier1404.dppc:DPP-Core:1.18.2-SNAPSHOT'
 }
 
 test {
