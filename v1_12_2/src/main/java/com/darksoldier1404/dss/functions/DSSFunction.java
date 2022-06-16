@@ -7,17 +7,11 @@ import com.darksoldier1404.dppc.utils.ConfigUtils;
 import com.darksoldier1404.dppc.utils.NBT;
 import com.darksoldier1404.dss.SimpleShop;
 import com.google.common.collect.Lists;
-import net.minecraft.server.v1_12_R1.EntityHuman;
-import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftContainer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryView;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +26,7 @@ public class DSSFunction {
     private static final SimpleShop plugin = SimpleShop.getInstance();
     private static final String prefix = plugin.prefix;
     private static final DLang lang = plugin.lang;
+    public static final Map<UUID, DInventory> currentInv = new HashMap<>();
 
     public static void openShop(Player p, String name) {
         if (!plugin.shops.containsKey(name)) {
@@ -39,7 +34,7 @@ public class DSSFunction {
             return;
         }
         YamlConfiguration shop = plugin.shops.get(name);
-        Inventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
+        DInventory inv = new DInventory(null, ChatColor.translateAlternateColorCodes('&', shop.getString("Shop.Title") == null ? name : shop.getString("Shop.Title")), shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 ItemStack item = shop.getItemStack("Shop.Items." + key);
@@ -71,7 +66,8 @@ public class DSSFunction {
                 inv.setItem(Integer.parseInt(key), r);
             }
         }
-        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
+        p.openInventory(inv);
+        currentInv.put(p.getUniqueId(), inv);
     }
 
     public static void openShop(CommandSender p, String name, String username) {
@@ -226,13 +222,14 @@ public class DSSFunction {
     public static void openShopShowCase(Player p, String name) {
         plugin.currentEditShop.put(p.getUniqueId(), name);
         YamlConfiguration shop = plugin.shops.get(name);
-        Inventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
+        DInventory inv = new DInventory(null, name, shop.getInt("Shop.Line") * 9, plugin);
         if (shop.getConfigurationSection("Shop.Items") != null) {
             for (String key : shop.getConfigurationSection("Shop.Items").getKeys(false)) {
                 inv.setItem(Integer.parseInt(key), shop.getItemStack("Shop.Items." + key));
             }
         }
-        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
+        p.openInventory(inv);
+        currentInv.put(p.getUniqueId(), inv);
     }
 
     public static void saveShopShowCase(Player p, Inventory inv) {
@@ -245,6 +242,7 @@ public class DSSFunction {
         saveData(name, "shops", shop);
         plugin.shops.put(name, shop);
         plugin.currentEditShop.remove(p.getUniqueId());
+        currentInv.remove(p.getUniqueId());
     }
 
     public static void setShopPrice(CommandSender p, int slot, double price, String name) {
@@ -466,7 +464,8 @@ public class DSSFunction {
         inv.setItem(4, info);
         inv.setPageContent(1, inv.getContents());
         inv.update();
-        p.openInventory(new CraftInventoryView(p, inv, new CraftContainer(inv, ((CraftPlayer) p).getHandle(), (new Random().nextInt(121100) + 121100))));
+        p.openInventory(inv);
+        currentInv.put(p.getUniqueId(), inv);
     }
 
     public static void reloadConfig() {

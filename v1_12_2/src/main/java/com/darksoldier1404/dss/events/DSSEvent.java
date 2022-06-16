@@ -18,11 +18,12 @@ public class DSSEvent implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
-        if (e.getInventory() instanceof DInventory) {
-            DInventory di = (DInventory) e.getInventory();
+        if (DSSFunction.currentInv.containsKey(p.getUniqueId())) {
+            DInventory di = DSSFunction.currentInv.get(p.getUniqueId());
             if (!plugin.currentEditShop.containsKey(p.getUniqueId())) {
                 plugin.currentItem.remove(p.getUniqueId());
                 plugin.isBuying.remove(p.getUniqueId());
+                DSSFunction.currentInv.remove(p.getUniqueId());
                 return;
             }
             if (e.getView().getTitle().equals(plugin.currentEditShop.get(p.getUniqueId()))) {
@@ -34,12 +35,9 @@ public class DSSEvent implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (e.getInventory() instanceof DInventory) {
-            if (plugin.currentEditShop.containsKey(p.getUniqueId())){
-                System.out.println("settings...");
-                return;
-            }
-            DInventory di = (DInventory) e.getInventory();
+        if (DSSFunction.currentInv.containsKey(p.getUniqueId())) {
+            if (plugin.currentEditShop.containsKey(p.getUniqueId())) return;
+            DInventory di = DSSFunction.currentInv.get(p.getUniqueId());
             if (di.isValidHandler(plugin)) {
                 e.setCancelled(true);
                 if (e.getCurrentItem() != null) {
@@ -99,8 +97,6 @@ public class DSSEvent implements Listener {
                     }
                 }
             }
-        }else{
-            System.out.println("its not DInventory");
         }
     }
 }
