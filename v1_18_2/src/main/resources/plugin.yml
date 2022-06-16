@@ -1,7 +1,7 @@
 name: DP-SimpleShop
 version: 1.0.2.13
 main: com.darksoldier1404.dss.SimpleShop
-api-version: 1.19
+api-version: 1.18
 authors: [ DEAD_POOLIO_ ]
 depend:
   - DPP-Core
