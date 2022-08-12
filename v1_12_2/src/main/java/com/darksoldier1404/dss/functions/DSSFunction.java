@@ -311,11 +311,12 @@ public class DSSFunction {
             p.sendMessage(prefix + lang.get("shop_func_inventory_full"));
         }
     }
-
     public static void sellMultiple(Player p, ItemStack item, int amount, boolean isSellAll) {
         if (item == null) return;
         if (NBT.getDoubleTag(item, "sellPrice") == 0 || NBT.getDoubleTag(item, "sellPrice") == -1) {
             p.sendMessage(prefix + lang.get("shop_func_cant_sell_item"));
+            plugin.currentItem.remove(p.getUniqueId());
+            plugin.isBuying.remove(p.getUniqueId());
             return;
         }
         double price = NBT.getDoubleTag(item, "sellPrice") * amount;
@@ -333,6 +334,8 @@ public class DSSFunction {
             amount = getAllItemCount(p.getInventory().getStorageContents(), r);
             if (amount == 0) {
                 p.sendMessage(prefix + lang.get("shop_func_not_enough_item"));
+                plugin.currentItem.remove(p.getUniqueId());
+                plugin.isBuying.remove(p.getUniqueId());
                 return;
             }
             price = NBT.getDoubleTag(item, "sellPrice") * amount;
@@ -358,10 +361,14 @@ public class DSSFunction {
             p.getInventory().setStorageContents(items);
         } else {
             p.sendMessage(prefix + lang.get("shop_func_not_enough_item"));
+            plugin.currentItem.remove(p.getUniqueId());
+            plugin.isBuying.remove(p.getUniqueId());
             return;
         }
         MoneyAPI.addMoney(p, price);
         p.sendMessage(prefix + lang.getWithArgs("shop_func_sold_item", String.valueOf(price)));
+        plugin.currentItem.remove(p.getUniqueId());
+        plugin.isBuying.remove(p.getUniqueId());
     }
 
     public static boolean hasEnoughItem(ItemStack[] items, ItemStack item, int amount) {
